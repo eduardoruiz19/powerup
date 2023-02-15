@@ -1,5 +1,6 @@
 package com.pragma.powerup.domain.model;
 
+import com.pragma.powerup.domain.exception.DomainException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RolEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +10,6 @@ import lombok.Setter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class UserModel {
     private Long id;
     private String nombre;
@@ -23,6 +20,94 @@ public class UserModel {
     private String clave;
 
     private RolEntity rol;
+
+
+    public UserModel() {
+    }
+
+    public UserModel(String nombre, String apellido, Long documentoIdentidad, String celular, String email, String clave, RolEntity rol) {
+        if(nombre.isEmpty()){
+            throw  new DomainException("El Nombre no puede estar Vacío");
+        }
+        if(apellido.isEmpty()){
+            throw  new DomainException("El Apellido no puede estar Vacío");
+        }
+
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.documentoIdentidad = documentoIdentidad;
+        this.celular = celular;
+        if(validateEmail()==false){
+            throw  new DomainException("Email no Válido");
+        }
+        this.email = email;
+        this.clave = clave;
+        this.rol = rol;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public Long getDocumentoIdentidad() {
+        return documentoIdentidad;
+    }
+
+    public void setDocumentoIdentidad(Long documentoIdentidad) {
+        this.documentoIdentidad = documentoIdentidad;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public RolEntity getRol() {
+        return rol;
+    }
+
+    public void setRol(RolEntity rol) {
+        this.rol = rol;
+    }
 
     @Override
     public String toString() {
@@ -57,4 +142,7 @@ public class UserModel {
             return false;
         }
     }
+
+
+
 }
