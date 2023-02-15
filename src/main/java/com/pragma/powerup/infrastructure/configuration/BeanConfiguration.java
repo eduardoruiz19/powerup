@@ -21,6 +21,7 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 
 @Configuration
 @RequiredArgsConstructor
@@ -67,7 +68,5 @@ public class BeanConfiguration {
     public IRolServicePort rolServicePort() {
         return new RolUseCase(rolPersistencePort());
     }
-
-
 
 }
