@@ -1,27 +1,25 @@
-package com.pragma.powerup;
+package com.pragma.powerup.unitaria;
 
-import com.pragma.powerup.application.handler.IUserHandler;
-import com.pragma.powerup.application.handler.impl.UserHandler;
-import com.pragma.powerup.domain.api.IUserServicePort;
-import com.pragma.powerup.domain.model.UserModel;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RolEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.UserEntity;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IUserRepository;
-import org.junit.jupiter.api.Test;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class PowerUpApplicationTests {
-
+public class UserEntityTest {
     @Autowired
     IUserRepository userRepository;
 
-
-
     @Test
-    void contextLoads() {
+    public void CreateUserEntity(){
+
         RolEntity rolEntity = new RolEntity();
         rolEntity.setId(1L); // admin
         UserEntity user= new UserEntity();
@@ -31,8 +29,10 @@ class PowerUpApplicationTests {
         user.setRol(rolEntity);
 
         userRepository.save(user);
-        return;
+        UserEntity user2=userRepository.findByNombre(user.getNombre());
+        assertNotNull(user2);
 
     }
 
 }
+

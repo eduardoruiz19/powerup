@@ -19,3 +19,4 @@ public class UserRequestDto {
     private RolEntity rol;
 
 }
+
