@@ -68,8 +68,4 @@ public class BeanConfiguration {
         return new RolUseCase(rolPersistencePort());
     }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
