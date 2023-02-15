@@ -20,12 +20,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
         auth.userDetailsService(powerUpUserDetailsService);
 
 
-/*        auth.userDetailsService(powerUpUserDetailsService);
-                .passwordEncoder(passwordEncoder());
-
-
- */
-
     }
 
     public BCryptPasswordEncoder passwordEncoder(){

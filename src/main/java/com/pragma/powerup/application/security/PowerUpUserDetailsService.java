@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 @Service
 public class PowerUpUserDetailsService  implements  UserDetailsService {
-    IUserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
