@@ -23,13 +23,13 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
 
     @Override
-    public UserModel saveObject(UserModel userModel) {
+    public UserModel saveUser(UserModel userModel) {
         UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
         return userEntityMapper.toUserModel(userEntity);
     }
 
     @Override
-    public List<UserModel> getAllObjects() {
+    public List<UserModel> getAllUsers() {
         List<UserEntity> entityList = userRepository.findAll();
         if (entityList.isEmpty()) {
             throw new NoDataFoundException();

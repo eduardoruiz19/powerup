@@ -20,6 +20,4 @@ public class RolRequestDto {
 
     private String name;
 
-    private List<UserEntity> listaUsuarios=new ArrayList<>();
-
 }

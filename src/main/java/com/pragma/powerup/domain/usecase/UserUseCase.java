@@ -11,17 +11,17 @@ public class UserUseCase implements IUserServicePort {
     /* APLICAR INYECCIÓN DE DEPENDENCIAS EN EL CONSTRUCTOR  -  NO USAR AUTOWIRED */
     private final IUserPersistencePort userPersistencePort;
 
-    public UserUseCase(IUserPersistencePort objectPersistencePort) {
-        this.userPersistencePort = objectPersistencePort;
+    public UserUseCase(IUserPersistencePort userPersistencePort) {
+        this.userPersistencePort = userPersistencePort;
     }
 
     @Override
-    public void saveObject(UserModel userModel) {
-        userPersistencePort.saveObject(userModel);
+    public void saveUser(UserModel userModel) {
+        userPersistencePort.saveUser(userModel);
     }
 
     @Override
-    public List<UserModel> getAllObjects() {
-        return userPersistencePort.getAllObjects();
+    public List<UserModel> getAllUsers() {
+        return userPersistencePort.getAllUsers();
     }
 }

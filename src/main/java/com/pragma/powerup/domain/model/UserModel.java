@@ -18,28 +18,33 @@ public class UserModel {
     private String celular;
     private String email;
     private String clave;
+    private String rol;
 
-    private RolEntity rol;
 
 
     public UserModel() {
     }
 
-    public UserModel(String nombre, String apellido, Long documentoIdentidad, String celular, String email, String clave, RolEntity rol) {
+    public UserModel(String nombre, String apellido, Long documentoIdentidad, String celular, String email, String clave, String rol) {
+
         if(nombre.isEmpty()){
             throw  new DomainException("El Nombre no puede estar Vacío");
         }
         if(apellido.isEmpty()){
             throw  new DomainException("El Apellido no puede estar Vacío");
         }
+        if(documentoIdentidad.toString().isEmpty()){
+            throw  new DomainException("Documento de Identidad no puede estar Vacío");
+        }
+        if(validateEmail()==false){
+            throw  new DomainException("Email no Válido");
+        }
+
 
         this.nombre = nombre;
         this.apellido = apellido;
         this.documentoIdentidad = documentoIdentidad;
         this.celular = celular;
-        if(validateEmail()==false){
-            throw  new DomainException("Email no Válido");
-        }
         this.email = email;
         this.clave = clave;
         this.rol = rol;
@@ -58,6 +63,9 @@ public class UserModel {
     }
 
     public void setNombre(String nombre) {
+        if(nombre.isEmpty()){
+            throw new DomainException("Nombre No puede Estar en Vacío");
+        }
         this.nombre = nombre;
     }
 
@@ -101,11 +109,11 @@ public class UserModel {
         this.clave = clave;
     }
 
-    public RolEntity getRol() {
+    public String getRol() {
         return rol;
     }
 
-    public void setRol(RolEntity rol) {
+    public void setRol(String rol) {
         this.rol = rol;
     }
 

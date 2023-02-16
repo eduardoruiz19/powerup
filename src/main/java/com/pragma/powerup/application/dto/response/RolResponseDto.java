@@ -10,13 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 public class RolResponseDto {
-
-
     private Long id;
-
     private String name;
 
-    private List<UserEntity> listaUsuarios=new ArrayList<>();
 
 
 }

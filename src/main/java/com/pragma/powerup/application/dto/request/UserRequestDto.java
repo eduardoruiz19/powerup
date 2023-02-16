@@ -1,5 +1,6 @@
 package com.pragma.powerup.application.dto.request;
 
+import com.pragma.powerup.domain.model.RolModel;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RolEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +16,7 @@ public class UserRequestDto {
     private String celular;
     private String email;
     private String clave;
-
-    private RolEntity rol;
+    private String  rol;
 
 }
 

@@ -37,9 +37,8 @@ public class UserEntity {
     @Column(name="clave")
     private String clave;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="rol_id")
-    private RolEntity rol;
+    @Column(name="rol")
+    private String rol;
 
 
     @Override
@@ -55,4 +54,6 @@ public class UserEntity {
                 ", rol=" + rol +
                 '}';
     }
+
+
 }

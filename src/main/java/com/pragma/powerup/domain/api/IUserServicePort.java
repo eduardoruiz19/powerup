@@ -9,7 +9,7 @@ import java.util.List;
 /* MÉTODOS QUE NOS INTERESA QUE EXPONGA NUESTRO DOMINIO  */
 public interface IUserServicePort {
 
-    void saveObject(UserModel objectModel);
+    void saveUser(UserModel userModel);
 
-    List<UserModel> getAllObjects();
+    List<UserModel> getAllUsers();
 }

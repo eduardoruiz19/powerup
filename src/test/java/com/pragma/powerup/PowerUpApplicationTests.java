@@ -1,6 +1,6 @@
 package com.pragma.powerup;
 
-import com.pragma.powerup.application.handler.IUserHandler;
+
 import com.pragma.powerup.application.handler.impl.UserHandler;
 import com.pragma.powerup.domain.api.IUserServicePort;
 import com.pragma.powerup.domain.model.UserModel;
@@ -28,7 +28,7 @@ class PowerUpApplicationTests {
         user.setApellido("aaaa");
         user.setNombre("bbbb");
         user.setClave("abcd");
-        user.setRol(rolEntity);
+        user.setRol("ADMIN");
 
         userRepository.save(user);
         return;

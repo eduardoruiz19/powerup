@@ -15,5 +15,5 @@ import java.util.List;
 public interface IUserResponseMapper {
     UserResponseDto toResponse(UserModel userModel);
 
-    List<UserResponseDto> toResponseList(List<UserModel> objectModelList);
+    List<UserResponseDto> toResponseList(List<UserModel> userModelList);
 }

@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface IUserHandler {
 
-    void saveObject(UserRequestDto userRequestDto);
+    void saveUser(UserRequestDto userRequestDto);
 
-    List<UserResponseDto> getAllObjects();
+    List<UserResponseDto> getAllUsers();
 }

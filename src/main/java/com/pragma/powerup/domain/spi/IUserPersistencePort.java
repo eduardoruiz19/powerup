@@ -9,7 +9,7 @@ import java.util.List;
 /*  PERSISTENCIA */
 public interface IUserPersistencePort {
 
-    UserModel saveObject(UserModel userModel);
+    UserModel saveUser(UserModel userModel);
 
-    List<UserModel> getAllObjects();
+    List<UserModel> getAllUsers();
 }

@@ -25,15 +25,11 @@ public class RolEntity {
     @Column(length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
-    private List<UserEntity> listaUsuarios=new ArrayList<>();
-
     @Override
     public String toString() {
         return "Rol{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", listaUsuarios=" + listaUsuarios +
                 '}';
     }
 }
