@@ -41,15 +41,18 @@ public class UserRestController {
         System.out.println("llega a saveOwner");
         userRequestDto.setRol("ADMIN");
         Map<String,Object > response = new HashMap<>();
+        userHandler.saveUser(userRequestDto);
+        /*
         try{
             userHandler.saveUser(userRequestDto);
         }catch (DataAccessException e){
+            //System.out.println(e.);
             response.put("mensaje","Data Insertion Error");
-            response.put("error",e.getMessage());
+            response.put("error",e.getLocalizedMessage());
             //response.put("error",e.getMostSpecificCause());
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+*/
 
         return new ResponseEntity<UserRequestDto>(HttpStatus.CREATED);
     }

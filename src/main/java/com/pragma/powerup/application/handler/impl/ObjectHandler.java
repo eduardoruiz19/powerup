@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor //Crea los constructores para los atributos definidos como finales
 @Transactional
 public class ObjectHandler implements IObjectHandler {
 

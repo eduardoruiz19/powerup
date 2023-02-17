@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 /* ReportingPolicy.IGNORE, es para ignorar advertencias */
+/* componentModel = "spring",  LO CONVIENTE EN UN BEAN */
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)

@@ -33,6 +33,7 @@ public class ObjectRestController {
             @ApiResponse(responseCode = "409", description = "Object already exists", content = @Content)
     })
     @PostMapping("/")
+    
     public ResponseEntity<Void> saveObject(@RequestBody ObjectRequestDto objectRequestDto) {
         objectHandler.saveObject(objectRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);

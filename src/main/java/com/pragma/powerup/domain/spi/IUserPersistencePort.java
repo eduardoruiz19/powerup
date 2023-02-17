@@ -11,5 +11,6 @@ public interface IUserPersistencePort {
 
     UserModel saveUser(UserModel userModel);
 
+    UserModel getUserByDocumentoIdentidad(Long documentoIdentidad);
     List<UserModel> getAllUsers();
 }

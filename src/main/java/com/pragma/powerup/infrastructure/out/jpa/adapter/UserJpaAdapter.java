@@ -5,6 +5,7 @@ import com.pragma.powerup.domain.model.UserModel;
 import com.pragma.powerup.domain.spi.IObjectPersistencePort;
 import com.pragma.powerup.domain.spi.IUserPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
+import com.pragma.powerup.infrastructure.exception.UserDocumentoIdentidadAlreadyExistException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.ObjectEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.UserEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IObjectEntityMapper;
@@ -14,6 +15,7 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserJpaAdapter implements IUserPersistencePort {
@@ -22,10 +24,24 @@ public class UserJpaAdapter implements IUserPersistencePort {
     private final IUserEntityMapper userEntityMapper;
 
 
+
     @Override
     public UserModel saveUser(UserModel userModel) {
-        UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
+        UserEntity userEntityExist=userRepository.findBydocumentoIdentidad(userModel.getDocumentoIdentidad());
+        if(userEntityExist==null){
+            UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
+            return userEntityMapper.toUserModel(userEntity);
+
+        }else{
+            throw  new UserDocumentoIdentidadAlreadyExistException();
+        }
+    }
+
+    @Override
+    public UserModel getUserByDocumentoIdentidad(Long documentoIdentidad) {
+        UserEntity userEntity =userRepository.findBydocumentoIdentidad(documentoIdentidad);
         return userEntityMapper.toUserModel(userEntity);
+
     }
 
     @Override

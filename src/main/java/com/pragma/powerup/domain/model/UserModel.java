@@ -36,7 +36,7 @@ public class UserModel {
         if(documentoIdentidad.toString().isEmpty()){
             throw  new DomainException("Documento de Identidad no puede estar Vacío");
         }
-        if(validateEmail()==false){
+        if(validateEmail(email)==false){
             throw  new DomainException("Email no Válido");
         }
 
@@ -90,6 +90,10 @@ public class UserModel {
     }
 
     public void setCelular(String celular) {
+
+        if(!validatePhone(celular)){
+            throw new DomainException("Phone format is not Valid");
+        }
         this.celular = celular;
     }
 
@@ -98,6 +102,9 @@ public class UserModel {
     }
 
     public void setEmail(String email) {
+        if(!validateEmail(email)){
+            throw new DomainException("Email is not Valid");
+        }
         this.email = email;
     }
 
@@ -132,7 +139,7 @@ public class UserModel {
     }
 
 
-    public boolean validateEmail() {
+    public boolean validateEmail(String email) {
 
         // Patrón para validar el email
         Pattern pattern = Pattern
@@ -143,14 +150,29 @@ public class UserModel {
         Matcher mather = pattern.matcher(email);
 
         if (mather.find() == true) {
-            System.out.println("El email ingresado es válido.");
+            //System.out.println("El email ingresado es válido.");
             return true;
         } else {
-            System.out.println("El email ingresado es inválido.");
+            //System.out.println("El email ingresado es inválido.");
             return false;
         }
     }
 
+    public boolean validatePhone(String phone){
+        if(phone.length()>13){
+            return false;
+        }
+        //String regex = "^\d{10}$";
 
+        String regex = "[+][0-9]{12}";  //validate with CountryCode
+        if(phone.length()<13)
+            regex= "[0-9]{10}";  //Validate without CountryCode
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+
+        return matcher.matches(); // returns true if pattern matches, else returns false
+
+    }
 
 }
