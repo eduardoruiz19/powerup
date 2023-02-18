@@ -20,12 +20,17 @@ public class ControllerAdvisor {
         System.out.println("llega Excepcion:"+exception.getClass().toString());
         String txtMensaje = "";
         String txtException = "";
-
         switch (exception.getClass().toString()) {
+            case "class com.pragma.powerup.infrastructure.exception.UserDocumentoIdentidadAlreadyExistException":
+                txtMensaje = "Error";
+                txtException = "Document Identity Already Exist ";
+
+                break;
 
             case "class org.springframework.dao.DataIntegrityViolationException":
-                txtMensaje = "Key Field already Exist";
-                txtException = exception.getClass().toString();
+                txtMensaje = "Error";
+                txtException = "Key Field already Exist";
+                //txtException = exception.getClass().toString();
                 break;
             default:
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
