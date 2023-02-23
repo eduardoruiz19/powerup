@@ -7,4 +7,8 @@ public interface IUserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity findBydocumentoIdentidad(Long documentoIdentidad);
 
+    UserEntity findByEmailAndClave(String email, String password);
+    UserEntity findOneByEmail(String email);
+
+    UserEntity findOneByClave(String password);
 }

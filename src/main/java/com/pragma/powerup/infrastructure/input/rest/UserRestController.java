@@ -39,7 +39,7 @@ public class UserRestController {
     @PostMapping("/owner")
     public ResponseEntity<?> saveOwner(@RequestBody UserRequestDto userRequestDto) {
         System.out.println("llega a saveOwner");
-        userRequestDto.setRol("ADMIN");
+        userRequestDto.setRol("OWNER");
         Map<String,Object > response = new HashMap<>();
         userHandler.saveUser(userRequestDto);
         /*

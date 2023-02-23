@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -27,7 +29,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/**/authenticate","/**/logout").permitAll()
+        http.csrf().disable().authorizeRequests().antMatchers("/**/authenticate","/**/logout","/**/user").permitAll()
                 .anyRequest().authenticated().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilterRequest, UsernamePasswordAuthenticationFilter.class);
@@ -37,4 +39,16 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return  new BCryptPasswordEncoder();
+    }
+
+    public static void main(String[] args) {
+        //root pass: $2a$10$XJ1Cbj7z/k0Yq0pjLc8oP.s4MVeNNk6ivE8lJn4ZV07PgItl06nVa
+        // 1234 pass:$2a$10$YjuDCgNZPA6kbdU3EONIKuWbHV2lCYFCIg0aG8gwKQ8pz2jH4Te/S
+        System.out.println("pass:"+ new BCryptPasswordEncoder().encode("1234"));
+
+    }
+
 }

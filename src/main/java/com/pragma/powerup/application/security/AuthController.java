@@ -1,12 +1,15 @@
 package com.pragma.powerup.application.security;
 
+import com.pragma.powerup.domain.usecase.UserUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,33 +28,21 @@ public class AuthController {
 
     @Autowired
     private RegisterUserDetailsService registerUserDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private JWTUtil jwtUtil;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> createToken(@RequestBody AuthenticationRequest request) {
-
-        System.err.println(request.getUsername() + " " + request.getPassword());
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            UserDetails userDetails = registerUserDetailsService.loadUserByUsername(request.getUsername());
+    public ResponseEntity<AuthenticationResponse> createToken(@RequestBody AuthenticationRequest request) throws BadCredentialsException {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getClave()));
+            UserDetails userDetails = registerUserDetailsService.loadUserByUsername(request.getEmail());
             String jwt = jwtUtil.generateToken(userDetails);
             return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<?> destroyToken(@RequestBody AuthenticationRequest request) {
-
-
-        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "logout");
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 
     }
+
 
 }

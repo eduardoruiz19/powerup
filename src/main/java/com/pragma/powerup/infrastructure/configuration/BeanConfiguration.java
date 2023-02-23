@@ -18,9 +18,12 @@ import com.pragma.powerup.infrastructure.out.jpa.mapper.IRolEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IObjectRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRolRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IUserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
@@ -33,9 +36,13 @@ public class BeanConfiguration {
     private final IUserRepository userRepository;
     private final IUserEntityMapper userEntityMapper;
 
+
+
     /*********** rol ***********/
     private final IRolRepository rolRepository;
     private final IRolEntityMapper rolEntityMapper;
+
+
 
     @Bean
     public IObjectPersistencePort objectPersistencePort() {
@@ -69,4 +76,11 @@ public class BeanConfiguration {
         return new RolUseCase(rolPersistencePort());
     }
 
+/*
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+ */
 }

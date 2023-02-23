@@ -37,6 +37,7 @@ public class UserEntity {
     @Column(name="clave")
     private String clave;
 
+
     @Column(name="rol")
     private String rol;
 

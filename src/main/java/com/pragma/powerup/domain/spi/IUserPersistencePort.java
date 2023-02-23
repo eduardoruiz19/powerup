@@ -12,5 +12,9 @@ public interface IUserPersistencePort {
     UserModel saveUser(UserModel userModel);
 
     UserModel getUserByDocumentoIdentidad(Long documentoIdentidad);
+
+    UserModel findOneByEmail(String email);
+    UserModel findOneByPassword(String password);
+    UserModel getUserByEmailAndPassword(String email, String password);
     List<UserModel> getAllUsers();
 }
