@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.exceptionhandler;
 
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,12 +17,19 @@ public class ControllerAdvisor {
 
     private static final String MESSAGE = "message";
 
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Map<String, String>> handleExpiredJwtException(
+            ExpiredJwtException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap("Error", "Session is Expired. Please Login."));
+    }
+
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Map<String, String>> handleBadCredentialsException(
             BadCredentialsException badCredentialsException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Collections.singletonMap("BAD CREDENTIALS", "BAD CREDENTIALS"));
+                .body(Collections.singletonMap("BAD CREDENTIALS", "email or Password is not valid"));
     }
 
     @ExceptionHandler(Exception.class)

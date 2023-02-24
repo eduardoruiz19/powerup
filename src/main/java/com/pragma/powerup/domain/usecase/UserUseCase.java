@@ -34,4 +34,10 @@ public class UserUseCase implements IUserServicePort {
     public List<UserModel> getAllUsers() {
         return userPersistencePort.getAllUsers();
     }
+
+
+    public UserModel getUserByEmail(String email) {
+        return userPersistencePort.findOneByEmail(email);
+    }
+
 }

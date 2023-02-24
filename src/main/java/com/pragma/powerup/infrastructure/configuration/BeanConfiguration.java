@@ -9,6 +9,7 @@ import com.pragma.powerup.domain.spi.IUserPersistencePort;
 import com.pragma.powerup.domain.usecase.ObjectUseCase;
 import com.pragma.powerup.domain.usecase.RolUseCase;
 import com.pragma.powerup.domain.usecase.UserUseCase;
+import com.pragma.powerup.infrastructure.feignClient.SecurityFeignRequestInterceptor;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.ObjectJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.RolJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.UserJpaAdapter;
@@ -19,6 +20,7 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IObjectRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRolRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IUserRepository;
 
+import feign.RequestInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -74,6 +76,13 @@ public class BeanConfiguration {
     @Bean
     public IRolServicePort rolServicePort() {
         return new RolUseCase(rolPersistencePort());
+    }
+
+
+    @Bean
+    public RequestInterceptor securityFeignRequestInterceptor() {
+
+        return new SecurityFeignRequestInterceptor();
     }
 
 /*
