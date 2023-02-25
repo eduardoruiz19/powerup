@@ -3,6 +3,7 @@ package com.pragma.powerup.infrastructure.input.rest;
 import com.pragma.powerup.application.dto.request.ObjectRequestDto;
 import com.pragma.powerup.application.dto.response.ObjectResponseDto;
 import com.pragma.powerup.application.handler.IObjectHandler;
+import com.pragma.powerup.application.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +25,7 @@ import java.util.List;
 @RequestMapping("/api/v1/object")
 @RequiredArgsConstructor
 public class ObjectRestController {
-
+    private final JWTUtil jwtUtil;
     private final IObjectHandler objectHandler;
 
     @Operation(summary = "Add a new object")

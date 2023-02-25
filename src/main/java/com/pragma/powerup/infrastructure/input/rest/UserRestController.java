@@ -6,6 +6,9 @@ import com.pragma.powerup.application.dto.response.ObjectResponseDto;
 import com.pragma.powerup.application.dto.response.UserResponseDto;
 import com.pragma.powerup.application.handler.IObjectHandler;
 import com.pragma.powerup.application.handler.IUserHandler;
+
+import com.pragma.powerup.application.security.JWTUtil;
+import com.pragma.powerup.infrastructure.feignClient.BearerHeader;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RolEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -15,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +33,7 @@ import java.util.Map;
 public class UserRestController {
 
     private final IUserHandler userHandler;
-
+    private final JWTUtil jwtUtil;
 
     @Operation(summary = "Add a new User Owner")
     @ApiResponses(value = {
@@ -62,7 +66,7 @@ public class UserRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User Client created", content = @Content),
             @ApiResponse(responseCode = "409", description = "User Client already exists", content = @Content)
-    })
+        })
     @PostMapping("/client")
     public ResponseEntity<?> saveClient(@RequestBody UserRequestDto userRequestDto) {
         //System.out.println("llega a saveOwner");
@@ -113,5 +117,24 @@ public class UserRestController {
     public ResponseEntity<List<UserResponseDto>> getAllObjects() {
         return ResponseEntity.ok(userHandler.getAllUsers());
     }
+
+
+    @GetMapping("/list")
+    public ResponseEntity<List<UserResponseDto>> getUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) BearerHeader bearerHeader) {
+        System.out.println("llega a list users");
+        //Ojo Eduardo aquí recibe el Token que viene del otro Microservicio
+        System.out.println("Authorization enviada desde el otro servicio:"+bearerHeader.toString());
+        String token=bearerHeader.toString().substring(7);
+        System.out.println("Token:'"+token+"'");
+        try{
+            String username=jwtUtil.extractUsername(token);
+            System.out.println("usuario:"+username);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(userHandler.getAllUsers(),HttpStatus.OK);
+    }
+
 
 }

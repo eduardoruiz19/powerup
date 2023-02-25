@@ -14,7 +14,7 @@ import java.util.List;
         url = "http://localhost:8082/api/v1/object",   //directorio que va a consultar el feign
         configuration = FeignClientConfig.class)
 
-@Headers("x-requester-id: {requester}")
+@Headers("llegan Headers Authorization: {Authorization}")
 public interface FeingServiceUtil {
     @GetMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE)
     //lo que se espera recibir

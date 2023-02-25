@@ -1,6 +1,6 @@
 package com.pragma.powerup.infrastructure.feignClient;
 
-final class BearerHeader {
+public final class BearerHeader {
     private final String token;
 
     private BearerHeader(String token) {
