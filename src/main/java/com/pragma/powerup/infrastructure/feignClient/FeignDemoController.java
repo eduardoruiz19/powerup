@@ -41,5 +41,17 @@ public class FeignDemoController {
 
 
     }
+    @GetMapping("/list")
+    public ResponseEntity<List<ObjectResponseDto>> get(@RequestHeader("authorization") String authorization) {
+
+        System.out.println("enviando  al otro Servicio:"+authorization);
+        String token=authorization.substring(7);
+        String username=jwtUtil.extractUsername(token);
+        System.out.println("username decodificado:"+username);
+
+        return new ResponseEntity<>(feingServiceUtil.getObjects(authorization), HttpStatus.OK);
+
+
+    }
 
 }

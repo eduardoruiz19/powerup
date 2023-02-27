@@ -21,12 +21,16 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
@@ -41,22 +45,23 @@ public class UserRestController {
             @ApiResponse(responseCode = "409", description = "User Owner already exists", content = @Content)
     })
     @PostMapping("/owner")
-    public ResponseEntity<?> saveOwner(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<?> saveOwner(@Valid @RequestBody UserRequestDto userRequestDto, @RequestHeader(HttpHeaders.AUTHORIZATION) BearerHeader bearerHeader) throws ConstraintViolationException {
         System.out.println("llega a saveOwner");
         userRequestDto.setRol("OWNER");
-        Map<String,Object > response = new HashMap<>();
-        userHandler.saveUser(userRequestDto);
-        /*
-        try{
-            userHandler.saveUser(userRequestDto);
-        }catch (DataAccessException e){
-            //System.out.println(e.);
-            response.put("mensaje","Data Insertion Error");
-            response.put("error",e.getLocalizedMessage());
-            //response.put("error",e.getMostSpecificCause());
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-*/
+        //Ojo Eduardo aquí recibe el Token que viene del otro Microservicio
+
+
+            UserResponseDto userDto = getDetailsAuthenticatedUser(bearerHeader.toString());
+            if(userDto.getRol().equals("ADMIN")){
+                userHandler.saveUser(userRequestDto);
+            }else {
+                Map<String,Object > response = new HashMap<>();
+                response.put("mensaje","Data Insertion Error");
+                response.put("error","Permission Denied");
+
+                return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CONFLICT);
+            }
+
 
         return new ResponseEntity<UserRequestDto>(HttpStatus.CREATED);
     }
@@ -67,7 +72,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "201", description = "User Client created", content = @Content),
             @ApiResponse(responseCode = "409", description = "User Client already exists", content = @Content)
         })
-    @PostMapping("/client")
+    @PostMapping("/signup")
     public ResponseEntity<?> saveClient(@RequestBody UserRequestDto userRequestDto) {
         //System.out.println("llega a saveOwner");
         userRequestDto.setRol("CLIENT");
@@ -92,10 +97,13 @@ public class UserRestController {
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
     @PostMapping("/")
-    public ResponseEntity<?> saveUser(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<?> saveUser(@RequestBody UserRequestDto userRequestDto, @RequestHeader(HttpHeaders.AUTHORIZATION) BearerHeader bearerHeader) {
         System.out.println("llega a saveUser");
         Map<String,Object > response = new HashMap<>();
         try{
+
+
+
             userHandler.saveUser(userRequestDto);
         }catch (DataAccessException e){
             response.put("mensaje","Data Insertion Error");
@@ -119,7 +127,7 @@ public class UserRestController {
     }
 
 
-    @GetMapping("/list")
+    @GetMapping("/list" )
     public ResponseEntity<List<UserResponseDto>> getUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) BearerHeader bearerHeader) {
         System.out.println("llega a list users");
         //Ojo Eduardo aquí recibe el Token que viene del otro Microservicio
@@ -136,5 +144,61 @@ public class UserRestController {
         return new ResponseEntity<>(userHandler.getAllUsers(),HttpStatus.OK);
     }
 
+    @GetMapping("/getuser1")
+    public ResponseEntity<UserResponseDto> getRoleUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) BearerHeader bearerHeader) {
+        System.out.println("llega a list users");
+        //Ojo Eduardo aquí recibe el Token que viene del otro Microservicio
+        System.out.println("Authorization enviada desde el otro servicio:"+bearerHeader.toString());
+        String token=bearerHeader.toString().substring(7);
+        System.out.println("Token:'"+token+"'");
+        String username = null;
+        try{
+            username=jwtUtil.extractUsername(token);
+            System.out.println("usuario:"+username);
 
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(userHandler.getUserByEmail(username),HttpStatus.OK);
+    }
+
+    @GetMapping("/getuserdata")
+    public ResponseEntity<UserResponseDto> getUserData(@RequestHeader(HttpHeaders.AUTHORIZATION) BearerHeader bearerHeader) {
+        System.out.println("llega a list users");
+        //Ojo Eduardo aquí recibe el Token que viene del otro Microservicio
+        System.out.println("Authorization enviada desde el otro servicio:"+bearerHeader.toString());
+        String token=bearerHeader.toString().substring(7);
+        System.out.println("Token:'"+token+"'");
+        String username = null;
+        try{
+            username=jwtUtil.extractUsername(token);
+            System.out.println("usuario:"+username);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(userHandler.getUserByEmail(username),HttpStatus.OK);
+    }
+
+
+    @GetMapping("{id}")
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") long id){
+        System.out.println("Consulta por Id");
+        UserResponseDto usuario = userHandler.getUserById(id);
+        System.out.println("Usuario:"+usuario.getApellido());
+        return new ResponseEntity<UserResponseDto>(usuario, HttpStatus.OK);
+    }
+
+    UserResponseDto getDetailsAuthenticatedUser(String token){
+        System.out.println("Authorization enviada desde el otro servicio:"+token);
+        token=token.substring(7);
+        System.out.println("Token:'"+token+"'");
+        String username = null;
+
+        username=jwtUtil.extractUsername(token);
+        System.out.println("usuario:"+username);
+        UserResponseDto userDto = userHandler.getUserByEmail(username);
+        return  userDto;
+
+    }
 }

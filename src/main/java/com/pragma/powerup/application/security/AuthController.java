@@ -39,7 +39,7 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> createToken(@RequestBody AuthenticationRequest request) throws BadCredentialsException {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getClave()));
             UserDetails userDetails = registerUserDetailsService.loadUserByUsername(request.getEmail());
-            String jwt = jwtUtil.generateToken(userDetails);
+            String jwt = jwtUtil.generateToken(userDetails, request.getClave());
             return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.OK);
 
     }

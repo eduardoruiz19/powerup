@@ -31,7 +31,7 @@ public class UserEntity {
     @Column(name="celular", length = 13)
     private String celular;
 
-    @Column(name="email")
+    @Column(name="email", unique=true)
     private String email;
 
     @Column(name="clave")

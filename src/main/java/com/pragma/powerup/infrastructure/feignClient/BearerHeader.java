@@ -9,7 +9,7 @@ public final class BearerHeader {
 
     @Override
     public String toString() {
-        return String.format("Bearer-> %s", token);
+        return String.format("%s", token);
     }
 
     public static BearerHeader of(String token) {

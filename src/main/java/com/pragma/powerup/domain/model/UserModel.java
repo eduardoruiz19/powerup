@@ -28,16 +28,16 @@ public class UserModel {
     public UserModel(String nombre, String apellido, Long documentoIdentidad, String celular, String email, String clave, String rol) {
 
         if(nombre.isEmpty()){
-            throw  new DomainException("El Nombre no puede estar Vacío");
+            throw  new DomainException("Name can not be in blank");
         }
         if(apellido.isEmpty()){
-            throw  new DomainException("El Apellido no puede estar Vacío");
+            throw  new DomainException("Last name cannot be in blank");
         }
         if(documentoIdentidad.toString().isEmpty()){
-            throw  new DomainException("Documento de Identidad no puede estar Vacío");
+            throw  new DomainException("Dni can not be in blank");
         }
         if(validateEmail(email)==false){
-            throw  new DomainException("Email no Válido");
+            throw  new DomainException("Email is not valid");
         }
 
 
@@ -64,7 +64,7 @@ public class UserModel {
 
     public void setNombre(String nombre) {
         if(nombre.isEmpty()){
-            throw new DomainException("Nombre No puede Estar en Vacío");
+            throw new DomainException("Name can not be in blank");
         }
         this.nombre = nombre;
     }
@@ -165,8 +165,11 @@ public class UserModel {
         //String regex = "^\d{10}$";
 
         String regex = "[+][0-9]{12}";  //validate with CountryCode
-        if(phone.length()<13)
-            regex= "[0-9]{10}";  //Validate without CountryCode
+        if(phone.length()<13){
+            //regex= "[0-9]{10}";  //Validate without CountryCode
+            regex= "[0-9]*";  //Validate without CountryCode
+
+        }
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phone);

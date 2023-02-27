@@ -39,6 +39,22 @@ public class UserHandler implements IUserHandler {
     }
 
     @Override
+    public UserResponseDto getUserByEmail(String email) {
+        UserModel userModel = userServicePort.getUserByEmail(email);
+        UserResponseDto userDto= userResponseMapper.toResponse(userModel);
+        return userDto;
+
+    }
+
+    @Override
+    public UserResponseDto getUserById(long id) {
+        UserModel userModel = userServicePort.getUserByiD(id);
+        UserResponseDto userDto= userResponseMapper.toResponse(userModel);
+        return userDto;
+
+    }
+
+    @Override
     public List<UserResponseDto> getAllUsers() {
 
         return userResponseMapper.toResponseList(userServicePort.getAllUsers());

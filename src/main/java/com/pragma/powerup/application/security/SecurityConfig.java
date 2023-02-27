@@ -30,7 +30,20 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.csrf().disable().authorizeRequests().antMatchers("/**/authenticate","/**/logout","/**/user").permitAll()
-        http.csrf().disable().authorizeRequests().antMatchers("/**/authenticate","/**/logout").permitAll()
+        // Habilitar pagina de Swagger http://localhost:8081/swagger-ui/index.html
+        http.csrf().disable().authorizeRequests()
+                .antMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**"
+                        ,"/**/authenticate"
+                        ,"/**/signup"
+                        ,"/**/logout",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**"
+                ).permitAll()
                 .anyRequest().authenticated().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilterRequest, UsernamePasswordAuthenticationFilter.class);

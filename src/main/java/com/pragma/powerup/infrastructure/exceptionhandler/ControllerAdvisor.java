@@ -38,6 +38,18 @@ public class ControllerAdvisor {
         String txtMensaje = "";
         String txtException = "";
         switch (exception.getClass().toString()) {
+            case "class org.springframework.http.converter.HttpMessageNotReadableException":
+                txtMensaje = "Error";
+                txtException = "Invalid data entered";
+
+                break;
+            case "class com.pragma.powerup.infrastructure.exception.UserEmailAlreadyExistException":
+
+                txtMensaje = "Error";
+                txtException = "Email Already Exist";
+
+                break;
+
             case "class com.pragma.powerup.infrastructure.exception.UserDocumentoIdentidadAlreadyExistException":
                 txtMensaje = "Error";
                 txtException = "Document Identity Already Exist ";

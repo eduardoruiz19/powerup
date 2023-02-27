@@ -17,5 +17,8 @@ public interface IUserHandler {
 
     void saveUser(UserRequestDto userRequestDto);
 
+    UserResponseDto getUserByEmail(String email);
+
+    UserResponseDto getUserById(long id);
     List<UserResponseDto> getAllUsers();
 }

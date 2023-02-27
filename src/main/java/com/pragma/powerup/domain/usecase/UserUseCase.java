@@ -40,4 +40,9 @@ public class UserUseCase implements IUserServicePort {
         return userPersistencePort.findOneByEmail(email);
     }
 
+    @Override
+    public UserModel getUserByiD(long id) {
+        return userPersistencePort.findOneById(id);
+    }
+
 }

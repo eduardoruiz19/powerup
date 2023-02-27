@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.feignClient;
 
 import com.pragma.powerup.application.dto.response.ObjectResponseDto;
+import com.pragma.powerup.application.dto.response.UserResponseDto;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
@@ -20,10 +21,20 @@ public interface FeingServiceUtil {
     //lo que se espera recibir
     List<ObjectResponseDto> getObjects(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization);
 
+
+    @GetMapping(value = "/list",consumes = MediaType.APPLICATION_JSON_VALUE)
+        //lo que se espera recibir
+    List<ObjectResponseDto> getObjects2(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization);
+
     @GetMapping(
             path = "/pruebaheader",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     String getHeader(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization);
+
+    @GetMapping(value = "/getuser",consumes = MediaType.APPLICATION_JSON_VALUE)
+        //lo que se espera recibir
+    UserResponseDto getUser2(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization);
+
 
 }

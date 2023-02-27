@@ -32,4 +32,9 @@ public class ObjectHandler implements IObjectHandler {
     public List<ObjectResponseDto> getAllObjects() {
         return objectResponseMapper.toResponseList(objectServicePort.getAllObjects());
     }
+
+    @Override
+    public List<ObjectResponseDto> getAllObjects2(String authorization) {
+        return objectResponseMapper.toResponseList(objectServicePort.getAllObjects());
+    }
 }

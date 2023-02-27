@@ -4,12 +4,11 @@ import com.pragma.powerup.domain.model.UserModel;
 import com.pragma.powerup.domain.spi.IUserPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.UserDocumentoIdentidadAlreadyExistException;
+import com.pragma.powerup.infrastructure.exception.UserEmailAlreadyExistException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.UserEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -21,15 +20,27 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
     @Override
     public UserModel saveUser(UserModel userModel) {
+        int sw=0;
         UserEntity userEntityExist=userRepository.findBydocumentoIdentidad(userModel.getDocumentoIdentidad());
-        if(userEntityExist==null){
-            //userModel.setClave(passwordEncoder.encode(userModel.getClave()));
+        if(userEntityExist!=null){
+            sw=1;
+            throw  new UserDocumentoIdentidadAlreadyExistException();
+        }
+
+        userEntityExist=userRepository.findOneByEmail(userModel.getEmail());
+        if(userEntityExist!=null){
+            sw=1;
+            throw  new UserEmailAlreadyExistException();
+
+        }
+        if(sw==0){
             UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
             return userEntityMapper.toUserModel(userEntity);
 
         }else{
-            throw  new UserDocumentoIdentidadAlreadyExistException();
+            return null;
         }
+
     }
 
     @Override
@@ -42,6 +53,13 @@ public class UserJpaAdapter implements IUserPersistencePort {
     @Override
     public UserModel findOneByEmail(String email) {
         UserEntity userEntity =userRepository.findOneByEmail(email);
+        return userEntityMapper.toUserModel(userEntity);
+
+    }
+
+    @Override
+    public UserModel findOneById(long id) {
+        UserEntity userEntity =userRepository.findById(id);
         return userEntityMapper.toUserModel(userEntity);
 
     }

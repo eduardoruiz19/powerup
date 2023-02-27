@@ -13,4 +13,5 @@ public interface IUserServicePort {
 
     List<UserModel> getAllUsers();
     UserModel getUserByEmail(String email);
+    UserModel getUserByiD(long id);
 }

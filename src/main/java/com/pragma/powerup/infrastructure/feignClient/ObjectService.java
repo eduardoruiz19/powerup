@@ -24,6 +24,13 @@ public class ObjectService {
         return (List<ObjectResponseDto>) new ResponseEntity<>(client.getObjects(authorization), HttpStatus.OK);
     }
 
+    public List<ObjectResponseDto> getObjects2(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization){
+        String token=authorization.substring(7);
+        String username=jwtUtil.extractUsername(token);
+
+        return (List<ObjectResponseDto>) new ResponseEntity<>(client.getObjects2(authorization), HttpStatus.OK);
+    }
+
     public  String getUser(String authorization) { return "ok"; }
     public  String   getHeader(String authorization) { return authorization; }
 }
